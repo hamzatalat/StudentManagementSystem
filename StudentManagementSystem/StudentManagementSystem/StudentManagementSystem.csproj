@@ -162,11 +162,34 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\AssignCoursesController.cs" />
+    <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Data\StudentManagementSystemContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101261833178_InitialCreate.cs" />
+    <Compile Include="Migrations\202101261833178_InitialCreate.designer.cs">
+      <DependentUpon>202101261833178_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101262034183_IntialDb.cs" />
+    <Compile Include="Migrations\202101262034183_IntialDb.designer.cs">
+      <DependentUpon>202101262034183_IntialDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101262102195_AddedCourseModels.cs" />
+    <Compile Include="Migrations\202101262102195_AddedCourseModels.designer.cs">
+      <DependentUpon>202101262102195_AddedCourseModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101262118165_AddedAssignCourses.cs" />
+    <Compile Include="Migrations\202101262118165_AddedAssignCourses.designer.cs">
+      <DependentUpon>202101262118165_AddedAssignCourses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AssignCourse.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\StudentContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -252,6 +274,20 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202101261833178_InitialCreate.resx">
+      <DependentUpon>202101261833178_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101262034183_IntialDb.resx">
+      <DependentUpon>202101262034183_IntialDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101262102195_AddedCourseModels.resx">
+      <DependentUpon>202101262102195_AddedCourseModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101262118165_AddedAssignCourses.resx">
+      <DependentUpon>202101262118165_AddedAssignCourses.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
