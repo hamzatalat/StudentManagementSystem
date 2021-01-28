@@ -2,104 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Web;
+using System.Web.Mvc;
 using StudentManagementSystem.Data;
 using StudentManagementSystem.Models;
 
 namespace StudentManagementSystem.Controllers
 {
-    public class AssignCoursesController : ApiController
+    public class AssignCoursesController : Controller
     {
         private StudentManagementSystemContext db = new StudentManagementSystemContext();
 
-        // GET: api/AssignCourses
-        public IQueryable<AssignCourse> GetAssignCourses()
+        // GET: AssignCourses
+        public ActionResult Index()
         {
-            return db.AssignCourses;
+            return View(db.AssignCourses.ToList());
         }
 
-        // GET: api/AssignCourses/5
-        [ResponseType(typeof(AssignCourse))]
-        public IHttpActionResult GetAssignCourse(int id)
+        // GET: AssignCourses/Details/5
+        public ActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             AssignCourse assignCourse = db.AssignCourses.Find(id);
             if (assignCourse == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(assignCourse);
+            return View(assignCourse);
         }
 
-        // PUT: api/AssignCourses/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutAssignCourse(int id, AssignCourse assignCourse)
+        // GET: AssignCourses/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != assignCourse.StudentId)
+        // POST: AssignCourses/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "StudentId,CourseId")] AssignCourse assignCourse)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(assignCourse).State = EntityState.Modified;
-
-            try
-            {
+                db.AssignCourses.Add(assignCourse);
                 db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AssignCourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(assignCourse);
         }
 
-        // POST: api/AssignCourses
-        [ResponseType(typeof(AssignCourse))]
-        public IHttpActionResult PostAssignCourse(AssignCourse assignCourse)
+        // GET: AssignCourses/Edit/5
+        public ActionResult Edit(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.AssignCourses.Add(assignCourse);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = assignCourse.StudentId }, assignCourse);
-        }
-
-        // DELETE: api/AssignCourses/5
-        [ResponseType(typeof(AssignCourse))]
-        public IHttpActionResult DeleteAssignCourse(int id)
-        {
             AssignCourse assignCourse = db.AssignCourses.Find(id);
             if (assignCourse == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(assignCourse);
+        }
 
+        // POST: AssignCourses/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "StudentId,CourseId")] AssignCourse assignCourse)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(assignCourse).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(assignCourse);
+        }
+
+        // GET: AssignCourses/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            AssignCourse assignCourse = db.AssignCourses.Find(id);
+            if (assignCourse == null)
+            {
+                return HttpNotFound();
+            }
+            return View(assignCourse);
+        }
+
+        // POST: AssignCourses/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            AssignCourse assignCourse = db.AssignCourses.Find(id);
             db.AssignCourses.Remove(assignCourse);
             db.SaveChanges();
-
-            return Ok(assignCourse);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -109,11 +123,6 @@ namespace StudentManagementSystem.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool AssignCourseExists(int id)
-        {
-            return db.AssignCourses.Count(e => e.StudentId == id) > 0;
         }
     }
 }
